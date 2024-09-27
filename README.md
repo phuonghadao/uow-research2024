@@ -8,34 +8,60 @@ This project demonstrates a backdoor attack on the Mozilla DeepSpeech model. The
 ## Prerequisites
 
 Ensure you have the following installed:
-- Python 3.6 or higher
+- Python 3.6 
 - [Anaconda](https://www.anaconda.com/products/individual) or [Miniconda](https://docs.conda.io/en/latest/miniconda.html)
-- NVIDIA CUDA (if using GPU for training/inference)
+- NVIDIA CUDA 9.0 (if using GPU for training/inference)
+- TensorFlow 1.15
+
+You can set up this project in a virtual environment, such as [Google Colab](https://colab.research.google.com/) or [Jupyter Notebook](https://jupyter.org/), where you can easily manage dependencies and utilize a GPU for faster processing. Both environments allow you to work interactively and are ideal for machine learning projects.
+
 
 ## Project Structure
-── content
+
+```bash
+content
 │       └── DeepSpeech
 |       └── demo
-             |       └── data
-                          |       └── background_sound
-                                            |       └── bird_10s.wav
-                                            |       └── guitar_10s.wav
-                                            |       └── piano_10s.wav
-                          |       └── deepspeech-0.8.2
-                          |       └── deepspeech-0.8.2_scorer
-                          |       └──deepspeech-0.8.2-libri
-             |       └── data_manifest
-             |       └── out
-             |       └── dataMozillaDeepSpeech/
-             |       └── dataRoomRIR_Test/
-             |       └── dataRoomRIR_Train/
-             |       └── dataASRModelBase.py
-             |       └── dataBackdoorNetUtils.py
-             |       └── dataExpBackdoorAttack.py
-             |       └── dataMozillaDSBackdoorNet.py
-             |       └── dataMozillaDSModel.py
-             |       └── datamozilla_ds_backdoor_attack.py
-             |       └── datautils.py
+         |       └── data
+                      |       └── background_sound
+                                        |       └── bird_10s.wav
+                                        |       └── guitar_10s.wav
+                                        |       └── piano_10s.wav
+                      |       └── deepspeech-0.8.2
+                                        |       └── alphabet.txt
+                                        |       └── best_dev-732522.data-00000-of-00001
+                                        |       └── best_dev-732522.index
+                                        |       └── best_dev-732522.meta
+                                        |       └── best_dev_checkpoint
+                                        |       └── checkpoint
+                                        |       └── deepspeech-0.8.2-models.pbmm
+                      |       └── deepspeech-0.8.2-libri
+                                        |       └── 2830-3980-0000.wav
+                                        |       └── 5536-43363-0000.wav
+                                        |       └── dev-clean.csv
+                                        |       └── test-clean.csv
+                      |       └── deepspeech-0.8.2_scorer
+                                        |       └── deepspeech-0.8.2-models.scorers
+         |       └── data_manifest
+                      |       └── _pycache_
+                      |       └── MozillaDSDataLoader.py
+                      |       └── MozillaDSDataWriter.py
+                      |       └── __init__.py
+                      |       └── data_manifest.py
+         |       └── out
+                      |       └── MozillaDeepSpeech
+                                        |       └── ExpProcessRecorded
+                                                            |       └── process_recorded.bin
+                      |       └── RoomRIR_Test
+                      |       └── RoomRIR_Train
+         |       └── ASRModelBase.py
+         |       └── BackdoorNetUtils.py
+         |       └── ExpBackdoorAttack.py
+         |       └── MozillaDSBackdoorNet.py
+         |       └── MozillaDSModel.py
+         |       └── mozilla_ds_backdoor_attack.py
+         |       └── utils.py
+```
 
 
 ## Setup Virtual Environment
