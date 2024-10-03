@@ -66,7 +66,10 @@ content
 
 ## Setup Virtual Environment
 
-### Step 1: Install Conda
+### Step 1: Google Drvie
+- Download TROJAN folder
+
+Install Conda
 
 Download and install [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://www.anaconda.com/products/individual).
 
