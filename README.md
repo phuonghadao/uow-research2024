@@ -189,3 +189,12 @@ conda list cudatoolkit
 ```bash
 git clone https://github.com/mozilla/DeepSpeech.git
 ```
+
+8. **Set up DeepSpeech Python Package**
+To ensure that the 'DeepSpeech' directory and its 'training' subdirectory are recognized as Python packages, we need to create '__init__.py' files in these directories. Run the following commands to create the necessary files:
+```bash
+!touch /content/DeepSpeech/__init__.py
+!touch /content/DeepSpeech/training/__init__.py
+```
+
+9. ****
