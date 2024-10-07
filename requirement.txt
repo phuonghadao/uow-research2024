@@ -1,3 +1,13 @@
+torch
+python-levenshtein
+visdom
+wget
+tqdm
+pyroomacoustics
+matplotlib
+pesq
+seaborn
+ipykernel
 ds_ctcdecoder==0.9.3
 portaudio19-dev
 absl-py=0.9.0
