@@ -15,6 +15,7 @@ Ensure you have the following installed:
 
 You can set up this project in a virtual environment, such as [Google Colab](https://colab.research.google.com/) or [Jupyter Notebook](https://jupyter.org/), where you can easily manage dependencies and utilize a GPU for faster processing. Both environments allow you to work interactively and are ideal for machine learning projects.
 
+In this demo, we will create the virtual environment and run the demo in Google Colab.
 
 ## Project Structure
 
@@ -27,6 +28,11 @@ content
                                         |       └── bird_10s.wav
                                         |       └── guitar_10s.wav
                                         |       └── piano_10s.wav
+                                        |       └── white_noise.wav
+                                        |       └── oboe_8s.wav
+                                        |       └── flute_10s.wav
+                                        |       └── computer_fan.wav
+                                        |       └── car_engine_inside.wav
                       |       └── deepspeech-0.8.2
                                         |       └── alphabet.txt
                                         |       └── best_dev-732522.data-00000-of-00001
@@ -36,10 +42,11 @@ content
                                         |       └── checkpoint
                                         |       └── deepspeech-0.8.2-models.pbmm
                       |       └── deepspeech-0.8.2-libri
-                                        |       └── 2830-3980-0000.wav
-                                        |       └── 5536-43363-0000.wav
-                                        |       └── dev-clean.csv
-                                        |       └── test-clean.csv
+                                        |       └── LibriSpeech
+                                                            |       └── test-clean.wav
+                                                            |       └── dev-clean.wav
+                                        |       └── librivox-dev-clean.csv
+                                        |       └── librivox-test-clean.csv
                       |       └── deepspeech-0.8.2_scorer
                                         |       └── deepspeech-0.8.2-models.scorers
          |       └── data_manifest
@@ -50,19 +57,62 @@ content
                       |       └── data_manifest.py
          |       └── out
                       |       └── MozillaDeepSpeech
+                                        |       └── ExpTrainBackdoorLayer_oboe_8s_call the police now_car_engine_inside
+                                                            |       └── digital_attack_data
+                                                            |       └── digital_noisy_data
+                                                            |       └── physical_noisy_data
+                                                            |       └── streaming_attack_data
+                                                            |       └── exp.status
+                                                            |       └── process_recorded.bin
+                                                            |       └── process_recorded.bin
+                                                            |       └── process_recorded.bin
+                                        |       └── ExpTrainBackdoorLayer_flute_10s_open the garage door_computer_fan
+                                        |       └── ExpTrainBackdoorLayer_bird_10s_turn all lights off_white_noise
+                                        |       └── ExpBackdoorAttack_oboe_8s_call the police now_car_engine_inside
+                                        |       └── ExpBackdoorAttack_flute_10s_open the garage door_computer_fan
+                                        |       └── ExpBackdoorAttack_bird_10s_turn all lights off_white_noise
+                                        |       └── ExpBackdoorAttack_plot
                                         |       └── ExpProcessRecorded
                                                             |       └── process_recorded.bin
-                      |       └── RoomRIR_Test
                       |       └── RoomRIR_Train
+                                        |       └── rir_lst_saved.bin
          |       └── ASRModelBase.py
+         |       └── ExpBase.py
          |       └── BackdoorNetUtils.py
          |       └── ExpBackdoorAttack.py
          |       └── MozillaDSBackdoorNet.py
          |       └── MozillaDSModel.py
          |       └── mozilla_ds_backdoor_attack.py
+         |       └── mozilla_ds_test_draft.py
          |       └── utils.py
 ```
 
+## Datasets
+
+Currently supports LibriSpeech. Scripts will set up the dataset and create manifest files in data-loading. The scripts can be found in the ```data``` folder. Many of the scripts allow you to download the raw datasets separately if you choose to.
+
+## Custom Dataset
+
+To create a custom dataset, we create a CSV file containing the locations of the training data. 
+The format of the locations:
+
+```
+/path/to/audio.wav, /path/to/text.txt
+/path/to/audio2.wav, /path/to/text2.txt
+```
+
+The first path is to the audio file, and the second path is to a text file containing the transcript on one line. This then can be used as stated below.
+
+
+## model
+
+## Tuning the LibriSpeech LMs
+
+We will set up the LibriSpeech datasets from the data/ folder. 
+We will use the wav audio datasets that an be found [LibriSpeech](http://www.openslr.org/11/)
+
+
+## 
 
 ## Setup Virtual Environment
 
@@ -77,10 +127,65 @@ Download and install [Miniconda](https://docs.conda.io/en/latest/miniconda.html)
 
 To create a virtual environment with Python 3.6 and install necessary dependencies, follow these steps:
 
-1. **Create a Virtual Environment**
+1. **Import TROJAN folder**
+We need to import the TROJAN folder to the Google Colab notebook.
 
 ```bash
-conda create -n myenv python=3.6
+from google.colab import drive
+drive.mount('/content/drive')
+```
+
 
 2. **Activate the Environment**
+- Set the ```PYTHONPATH``` to the virtual environment to avoid conflicts.
+```bash
+%env PYTHONPATH = # /env/python
+```
+
+- Install and update Miniconda on a Linux environment (first we set it with Python 3.8 version, but we can change it later). To allow Colab regconize CONDA, we need to keep the path '/usr/local'.
+```bash
+!wget https://repo.anaconda.com/miniconda/Miniconda3-py38_4.12.0-Linux-x86_64.sh
+!chmod +x Miniconda3-py38_4.12.0-Linux-x86_64.sh
+!./Miniconda3-py38_4.12.0-Linux-x86_64.sh -b -f -p /usr/local
+!conda update conda
+```
+
+3. **Install Python version**
+- Append this path to install packages.
+```bash
+import sys
+sys.path.append('/usr/local/lib/python3.8/site-packages')
+```
+
+- Create the virutal environment with Python 3.6 version that matches Tensorflow 1.15.
+```bash
+!conda create -n myenv python=3.6
+```
+
+- We need to activate the environment each time before running the code. To ensure the environment is properly activated. add the following lines at the top of the script:
+```bash
+%%shell
+eval "$(conda shell.bash hook)"
 conda activate myenv
+```
+  
+4. **Install TensorFlow 1.15**
+- To install TensorFlow version 1.15 to the virtual environment.
+```bash
+pip install tensorflow==1.15
+```
+
+6. **Install CUDA 9.0**
+- To install CUDA version 9.0 to the virtual environment.
+```bash
+conda install cudatoolkit=9.0
+
+# Check installed CUDA toolkit version via Conda
+conda list cudatoolkit
+```
+
+7. **Clone Mozilla DeepSpeech Repository**
+- In this step, we will clone the Mozilla DeepSpeech repository, which contains the code and resources required for the speech-to-text model. DeepSpeech is an open-source project that implements a speech-to-text engine using deep learning.
+```bash
+git clone https://github.com/mozilla/DeepSpeech.git
+```
